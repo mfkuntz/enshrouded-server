@@ -36,9 +36,15 @@ if [ -z "$SERVER_IP" ]; then
     echo "$(timestamp) WARN: SERVER_IP not set, using default: 0.0.0.0"
 fi
 
+STEAM_VALIDATE="validate"
+if [ -z "$STEAM_SKIP_VALIDATE" ]; then
+    STEAM_VALIDATE=""
+    echo "$(timestamp) SKIPPING VALIDATION"
+fi
+
 # Install/Update Enshrouded
 echo "$(timestamp) INFO: Updating Enshrouded Dedicated Server"
-steamcmd +@sSteamCmdForcePlatformType windows +force_install_dir "$ENSHROUDED_PATH" +login anonymous +app_update ${STEAM_APP_ID} validate +quit
+steamcmd +@sSteamCmdForcePlatformType windows +force_install_dir "$ENSHROUDED_PATH" +login anonymous +app_update ${STEAM_APP_ID} ${STEAM_VALIDATE} +quit
 
 # Check that steamcmd was successful
 if [ $? != 0 ]; then
