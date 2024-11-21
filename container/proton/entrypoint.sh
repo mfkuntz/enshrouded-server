@@ -42,15 +42,25 @@ if [ -z "$STEAM_SKIP_VALIDATE" ]; then
     echo "$(timestamp) SKIPPING VALIDATION"
 fi
 
-# Install/Update Enshrouded
-echo "$(timestamp) INFO: Updating Enshrouded Dedicated Server"
-steamcmd +@sSteamCmdForcePlatformType windows +force_install_dir "$ENSHROUDED_PATH" +login anonymous +app_update ${STEAM_APP_ID} ${STEAM_VALIDATE} +quit
+if [ "$STEAM_SKIP_UPDATE" == "true" ]; then
+    echo "$(timestamp) SKIPPING UPDATE"
+else
+    # Install/Update Enshrouded
+    echo "$(timestamp) INFO: Updating Enshrouded Dedicated Server"
+    steamcmd +@sSteamCmdForcePlatformType windows \
+        +force_install_dir "$ENSHROUDED_PATH" \
+        +login anonymous \
+        +app_update "${STEAM_APP_ID}" \
+        ${STEAM_VALIDATE} +quit
 
-# Check that steamcmd was successful
-if [ $? != 0 ]; then
-    echo "$(timestamp) ERROR: steamcmd was unable to successfully initialize and update Enshrouded"
-    exit 1
+    # Check that steamcmd was successful
+    if [ $? != 0 ]; then
+        echo "$(timestamp) ERROR: steamcmd was unable to successfully initialize and update Enshrouded"
+        exit 1
+    fi
 fi
+
+
 
 # Copy example server config if not already present
 if ! [ -f "${ENSHROUDED_PATH}/enshrouded_server.json" ]; then
