@@ -6,6 +6,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: date-tag
+        id: docker-tag
+        run: echo "tag=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
       - name: Build image
         id: buildah
         uses: redhat-actions/buildah-build@v2
@@ -13,7 +16,7 @@ jobs:
           image: enshrouded-dedicated-server
           context: ./container/proton
           containerfiles: ./container/proton/Dockerfile
-          tags: proton-latest 
+          tags: "${{ steps.docker-tag.outputs.tag }},latest"
       - name: Push image to Docker Hub
         uses: redhat-actions/push-to-registry@v2
         with:
