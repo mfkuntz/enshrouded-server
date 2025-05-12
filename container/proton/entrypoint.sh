@@ -47,7 +47,7 @@ if [ "$STEAM_SKIP_UPDATE" == "true" ]; then
 else
     # Install/Update Enshrouded
     echo "$(timestamp) INFO: Updating Enshrouded Dedicated Server"
-    steamcmd +@sSteamCmdForcePlatformType windows \
+    ${STEAMCMD_PATH}/steamcmd.sh +@sSteamCmdForcePlatformType windows \
         +force_install_dir "$ENSHROUDED_PATH" \
         +login anonymous \
         +app_update "${STEAM_APP_ID}" \
@@ -109,7 +109,7 @@ ln -sf /proc/1/fd/1 "${ENSHROUDED_PATH}/logs/enshrouded_server.log"
 # Launch Enshrouded
 echo "$(timestamp) INFO: Starting Enshrouded Dedicated Server"
 
-${STEAM_PATH}/compatibilitytools.d/GE-Proton${GE_PROTON_VERSION}/proton run ${ENSHROUDED_PATH}/enshrouded_server.exe &
+${STEAMCMD_PATH}/compatibilitytools.d/GE-Proton${GE_PROTON_VERSION}/proton run ${ENSHROUDED_PATH}/enshrouded_server.exe &
 
 # Find pid for enshrouded_server.exe
 timeout=0
