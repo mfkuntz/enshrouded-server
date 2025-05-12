@@ -5,20 +5,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: date-tag
         id: docker-tag
         run: echo "tag=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
       - name: Build image
         id: buildah
-        uses: redhat-actions/buildah-build@v2
+        uses: redhat-actions/buildah-build@7a95fa7ee0f02d552a32753e7414641a04307056 # v2.13
         with:
           image: enshrouded-dedicated-server
           context: ./container/proton
           containerfiles: ./container/proton/Dockerfile
-          tags: "${{ steps.docker-tag.outputs.tag }},latest"
+          tags: "${{ steps.docker-tag.outputs.tag }} latest"
       - name: Push image to Docker Hub
-        uses: redhat-actions/push-to-registry@v2
+        uses: redhat-actions/push-to-registry@5ed88d269cf581ea9ef6dd6806d01562096bee9c # v2.8
         with:
           image: ${{ steps.buildah.outputs.image }}
           tags: ${{ steps.buildah.outputs.tags }}
